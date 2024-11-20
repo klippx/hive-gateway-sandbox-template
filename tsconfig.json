@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+      "lib": ["es2021"],
+      "module": "NodeNext",
+      "target": "es2021",
+  
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "moduleResolution": "NodeNext",
+  
+      "outDir": "dist",
+      "types": ["node"],
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "strictPropertyInitialization": false,
+      "noUncheckedIndexedAccess": true,
+      "sourceMap": true,
+  
+      "resolveJsonModule": true
+    }
+  }
+  
