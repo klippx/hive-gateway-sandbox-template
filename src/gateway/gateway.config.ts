@@ -31,7 +31,19 @@ const createSupergraph = () => {
   );
 };
 
+const defaultQuery = `query SampleQuery {
+  topProducts {
+    name
+    reviews {
+      body
+    }
+  }
+}`.trim();
+
 export const gatewayConfig: GatewayConfigSupergraph = {
   supergraph: createSupergraph(),
   graphqlEndpoint: "/",
+  graphiql: {
+    defaultQuery,
+  },
 };
