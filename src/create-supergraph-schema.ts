@@ -8,6 +8,7 @@ import { waitForServices } from './local-service-list.js';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const hivePath = path.join(__dirname, '../node_modules/.bin/hive');
+const prettierPath = path.join(__dirname, '../node_modules/.bin/prettier');
 
 function runCommand(
   command: string,
@@ -41,10 +42,14 @@ export async function createSupergraphSchema() {
   const servicesOption = services
     .map((service) => `--service ${service.name} --url ${service.url}`)
     .join(' ');
-  const cmd = `${hivePath} dev --write=supergraph.graphql ${servicesOption}`;
-  await runCommand(cmd)
-    .then(() => {
+    const hiveCmd = `${hivePath} dev --write=supergraph.graphql ${servicesOption}`;
+    const prettierCmd = `${prettierPath} --write supergraph.graphql`;
+    await runCommand(hiveCmd)
+    .then(async () => {
       log.info(' ✔ Composition successful.');
+      return runCommand(prettierCmd).then(() => {
+        log.info(' ✔ Supergraph schema formatted.');
+      })
     })
     .catch(log.error);
 }
