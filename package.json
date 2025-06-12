@@ -1,28 +1,28 @@
 {
-  "name": "graphql-codegen-persisted-queries",
-  "version": "1.0.0",
+  "name": "hive-gateway-sandbox-template",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "start": "tsx ./src/index.ts"
   },
   "dependencies": {
-    "@apollo/subgraph": "2.9.3",
-    "@graphql-hive/gateway": "1.5.0",
-    "chalk": "4.1.2",
-    "graphql": "16.9.0",
+    "@apollo/subgraph": "2.11.0",
+    "@graphql-hive/gateway": "1.15.1",
+    "chalk": "5.4.1",
+    "graphql": "16.11.0",
     "graphql-middleware": "6.1.35",
     "graphql-tag": "2.12.6",
     "node-fetch": "3.3.2",
     "winston": "3.17.0",
-    "znv": "0.4.0",
-    "zod": "3.23.8"
+    "znv": "0.5.0",
+    "zod": "3.25.63"
   },
   "devDependencies": {
-    "@graphql-hive/cli": "0.44.3",
-    "@types/node": "20.16.1",
-    "prettier": "3.3.3",
-    "tsx": "4.17.0",
-    "typescript": "5.5.4"
+    "@graphql-hive/cli": "0.50.1",
+    "@types/node": "24.0.1",
+    "prettier": "3.5.3",
+    "tsx": "4.20.2",
+    "typescript": "5.8.3"
   },
-  "packageManager": "yarn@4.5.1"
+  "packageManager": "yarn@4.9.2"
 }
