@@ -3647,6 +3647,7 @@ __metadata:
     chalk: "npm:5.4.1"
     graphql: "npm:16.11.0"
     graphql-tag: "npm:2.12.6"
+    graphql-yoga: "npm:5.13.5"
     prettier: "npm:3.5.3"
     typescript: "npm:5.8.3"
   languageName: unknown
@@ -3661,9 +3662,9 @@ __metadata:
     "@graphql-codegen/typescript": "npm:4.1.6"
     "@graphql-codegen/typescript-resolvers": "npm:4.5.1"
     "@types/node": "npm:24.0.1"
-    chalk: "npm:5.4.1"
     graphql: "npm:16.11.0"
     graphql-tag: "npm:2.12.6"
+    graphql-yoga: "npm:5.13.5"
     prettier: "npm:3.5.3"
     typescript: "npm:5.8.3"
   languageName: unknown
@@ -6258,7 +6259,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql-yoga@npm:^5.13.4, graphql-yoga@npm:^5.13.5":
+"graphql-yoga@npm:5.13.5, graphql-yoga@npm:^5.13.4, graphql-yoga@npm:^5.13.5":
   version: 5.13.5
   resolution: "graphql-yoga@npm:5.13.5"
   dependencies:
