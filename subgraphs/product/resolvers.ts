@@ -1,4 +1,6 @@
-export const resolvers: Resolvers<Context> = {
+import type { $Resolvers } from "./generated/types.js";
+
+export const resolvers: $Resolvers = {
   Product: {
     upc: async (parent, _args, _context) => {
       return `upc-${parent.id}`;
@@ -11,7 +13,7 @@ export const resolvers: Resolvers<Context> = {
     },
   },
   Query: {
-    topProducts: async (_parent, _args, context) => {
+    topProducts: async (_parent, _args, _context) => {
       return [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
     },
   },

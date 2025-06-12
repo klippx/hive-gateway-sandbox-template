@@ -1,6 +1,6 @@
-import chalk from 'chalk';
-import { log } from './logger.js';
-import fetch, { type Response } from 'node-fetch';
+import chalk from "chalk";
+import { log } from "./logger.js";
+import fetch, { type Response } from "node-fetch";
 
 type Dgs = {
   port: number;
@@ -23,7 +23,7 @@ async function wait(url: string, timeout: number): Promise<void> {
     try {
       res = await fetch(`${url}?query=%7B__typename%7D`, {
         headers: {
-          'apollo-require-preflight': 'true',
+          "apollo-require-preflight": "true",
         },
       });
 
@@ -44,7 +44,6 @@ async function wait(url: string, timeout: number): Promise<void> {
   }
 }
 
-
 const servicesConfig: DevConfig = {
   subgraphs: {
     product: {
@@ -56,16 +55,16 @@ const servicesConfig: DevConfig = {
   },
 };
 
-const pendingIcon = chalk.yellow('☇');
-const successIcon = chalk.green('✔');
-const failureIcon = chalk.red('𐄂');
+const pendingIcon = chalk.yellow("☇");
+const successIcon = chalk.green("✔");
+const failureIcon = chalk.red("𐄂");
 
 export const waitForServices = async (timeout: number): Promise<Service[]> => {
   const config = servicesConfig;
-  const dgsEntries = Object.entries(config.subgraphs)
+  const dgsEntries = Object.entries(config.subgraphs);
   const waitList = new Set(dgsEntries.map(([name, _dgs]) => name));
   const interval = setInterval(() => {
-    const serviceList = Array.from(waitList.values()).join(', ');
+    const serviceList = Array.from(waitList.values()).join(", ");
     log.info(` ${pendingIcon} Still waiting for subgraphs: ${serviceList}`);
   }, 3000);
 
@@ -83,7 +82,7 @@ export const waitForServices = async (timeout: number): Promise<Service[]> => {
         })
         .catch((e) => {
           log.error(
-            ` ${failureIcon} Failed to reach ${chalk.yellow(name)} at ${chalk.underline(urlString)}`,
+            ` ${failureIcon} Failed to reach ${chalk.yellow(name)} at ${chalk.underline(urlString)}`
           );
           throw e;
         })
@@ -93,6 +92,6 @@ export const waitForServices = async (timeout: number): Promise<Service[]> => {
             clearInterval(interval);
           }
         });
-    }),
+    })
   );
 };

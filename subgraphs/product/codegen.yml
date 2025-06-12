@@ -1,0 +1,17 @@
+schema: schema.gql
+emitLegacyCommonJSImports: false
+generates:
+  ./generated/types.ts:
+    plugins:
+      - typescript
+      - typescript-resolvers
+    config:
+      typesPrefix: "$"
+      enumsAsTypes: true
+      useIndexSignature: true
+      maybeValue: "T | undefined"
+      mappers:
+        Product: "../mappers/product.js#Product"
+hooks:
+  afterAllFileWrite:
+    - "yarn prettier --write"

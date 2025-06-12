@@ -1,0 +1,15 @@
+schema: schema.gql
+emitLegacyCommonJSImports: false
+generates:
+  ./generated/types.ts:
+    plugins:
+      - typescript
+      - typescript-resolvers
+    config:
+      typesPrefix: "$"
+      enumsAsTypes: true
+      useIndexSignature: true
+      maybeValue: "T | undefined"
+hooks:
+  afterAllFileWrite:
+    - "yarn prettier --write"

@@ -1,0 +1,25 @@
+{
+  "name": "@sandbox-template/gateway",
+  "version": "1.0.0",
+  "type": "module",
+  "repository": "https://github.com/klippx/hive-gateway-sandbox-template",
+  "dependencies": {
+    "@graphql-hive/gateway": "1.15.1",
+    "chalk": "5.4.1",
+    "graphql": "16.11.0",
+    "graphql-middleware": "6.1.35",
+    "graphql-tag": "2.12.6",
+    "node-fetch": "3.3.2",
+    "winston": "3.17.0",
+    "znv": "0.5.0",
+    "zod": "3.25.63"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "5.0.7",
+    "@graphql-codegen/typescript": "4.1.6",
+    "@graphql-codegen/typescript-resolvers": "4.5.1",
+    "@types/node": "24.0.1",
+    "prettier": "3.5.3",
+    "typescript": "5.8.3"
+  }
+}

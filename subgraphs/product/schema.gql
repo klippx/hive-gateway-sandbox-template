@@ -1,0 +1,16 @@
+extend schema
+  @link(
+    url: "https://specs.apollo.dev/federation/v2.3"
+    import: ["@key", "@shareable"]
+  )
+
+type Query {
+  topProducts(first: Int = 5): [Product]
+}
+
+type Product @key(fields: "upc") {
+  id: Int! @shareable
+  upc: String!
+  name: String!
+  price: Float
+}

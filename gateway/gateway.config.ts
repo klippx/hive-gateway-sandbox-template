@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import { parseEnv, z } from "znv";
 import type { GatewayConfigSupergraph } from "@graphql-hive/gateway";
-import { log } from "../logger.js";
+import { log } from "./logger.js";
 
 const envSchemas = {
   SERVICE_NAME: z.string().default("hive-gateway"),

@@ -72,8 +72,9 @@ type Product
   @join__type(graph: PRODUCT, key: "upc")
   @join__type(graph: REVIEW, key: "upc") {
   upc: String!
+  id: Int!
   name: String! @join__field(graph: PRODUCT)
-  price: Int @join__field(graph: PRODUCT)
+  price: Float @join__field(graph: PRODUCT)
   reviews: [Review] @join__field(graph: REVIEW)
 }
 
