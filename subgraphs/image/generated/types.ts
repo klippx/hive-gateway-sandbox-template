@@ -1,5 +1,4 @@
 import { GraphQLResolveInfo } from "graphql";
-import { Product } from "../mappers/product.js";
 export type Maybe<T> = T | undefined;
 export type InputMaybe<T> = T | undefined;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -20,9 +19,6 @@ export type Incremental<T> =
   | {
       [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never;
     };
-export type RequireFields<T, K extends keyof T> = Omit<T, K> & {
-  [P in K]-?: NonNullable<T[P]>;
-};
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string };
@@ -34,24 +30,14 @@ export type Scalars = {
 
 export type $Image = {
   __typename?: "Image";
-  count?: Maybe<Scalars["Int"]["output"]>;
   id: Scalars["Int"]["output"];
+  url?: Maybe<Scalars["String"]["output"]>;
 };
 
 export type $Product = {
   __typename?: "Product";
-  name: Scalars["String"]["output"];
-  price?: Maybe<Scalars["Float"]["output"]>;
+  images?: Maybe<Array<Maybe<$Image>>>;
   upc: Scalars["String"]["output"];
-};
-
-export type $Query = {
-  __typename?: "Query";
-  topProducts?: Maybe<Array<Maybe<$Product>>>;
-};
-
-export type $QueryTopProductsArgs = {
-  first?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -165,22 +151,18 @@ export type DirectiveResolverFn<
 /** Mapping between all available schema types and the resolvers types */
 export type $ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]["output"]>;
-  Float: ResolverTypeWrapper<Scalars["Float"]["output"]>;
   Image: ResolverTypeWrapper<$Image>;
   Int: ResolverTypeWrapper<Scalars["Int"]["output"]>;
-  Product: ResolverTypeWrapper<Product>;
-  Query: ResolverTypeWrapper<{}>;
+  Product: ResolverTypeWrapper<$Product>;
   String: ResolverTypeWrapper<Scalars["String"]["output"]>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type $ResolversParentTypes = ResolversObject<{
   Boolean: Scalars["Boolean"]["output"];
-  Float: Scalars["Float"]["output"];
   Image: $Image;
   Int: Scalars["Int"]["output"];
-  Product: Product;
-  Query: {};
+  Product: $Product;
   String: Scalars["String"]["output"];
 }>;
 
@@ -189,8 +171,8 @@ export type $ImageResolvers<
   ParentType extends
     $ResolversParentTypes["Image"] = $ResolversParentTypes["Image"],
 > = ResolversObject<{
-  count?: Resolver<Maybe<$ResolversTypes["Int"]>, ParentType, ContextType>;
   id?: Resolver<$ResolversTypes["Int"], ParentType, ContextType>;
+  url?: Resolver<Maybe<$ResolversTypes["String"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -199,27 +181,16 @@ export type $ProductResolvers<
   ParentType extends
     $ResolversParentTypes["Product"] = $ResolversParentTypes["Product"],
 > = ResolversObject<{
-  name?: Resolver<$ResolversTypes["String"], ParentType, ContextType>;
-  price?: Resolver<Maybe<$ResolversTypes["Float"]>, ParentType, ContextType>;
+  images?: Resolver<
+    Maybe<Array<Maybe<$ResolversTypes["Image"]>>>,
+    ParentType,
+    ContextType
+  >;
   upc?: Resolver<$ResolversTypes["String"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type $QueryResolvers<
-  ContextType = any,
-  ParentType extends
-    $ResolversParentTypes["Query"] = $ResolversParentTypes["Query"],
-> = ResolversObject<{
-  topProducts?: Resolver<
-    Maybe<Array<Maybe<$ResolversTypes["Product"]>>>,
-    ParentType,
-    ContextType,
-    RequireFields<$QueryTopProductsArgs, "first">
-  >;
 }>;
 
 export type $Resolvers<ContextType = any> = ResolversObject<{
   Image?: $ImageResolvers<ContextType>;
   Product?: $ProductResolvers<ContextType>;
-  Query?: $QueryResolvers<ContextType>;
 }>;

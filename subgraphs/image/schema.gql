@@ -6,12 +6,13 @@ extend schema
     import: ["@key", "@external", "@shareable"]
   )
 
-type Review {
-  body: String
+type Image @key(fields: "id") {
+  id: Int!
+  url: String
 }
 
 extend type Product @key(fields: "upc") {
   id: Int! @shareable
   upc: String!
-  reviews: [Review]
+  images: [Image]
 }

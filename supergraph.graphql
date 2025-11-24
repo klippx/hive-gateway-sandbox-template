@@ -60,25 +60,38 @@ enum link__Purpose {
 }
 
 enum join__Graph {
+  IMAGE @join__graph(name: "image", url: "http://localhost:4002/graphql")
   PRODUCT @join__graph(name: "product", url: "http://localhost:4000/graphql")
   REVIEW @join__graph(name: "review", url: "http://localhost:4001/graphql")
 }
 
-type Query @join__type(graph: PRODUCT) @join__type(graph: REVIEW) {
-  topProducts(first: Int = 5): [Product] @join__field(graph: PRODUCT)
+type Image
+  @join__type(graph: IMAGE, key: "id")
+  @join__type(graph: PRODUCT, key: "id") {
+  id: Int!
+  url: String @join__field(graph: IMAGE)
+  count: Int @join__field(graph: PRODUCT)
 }
 
 type Product
+  @join__type(graph: IMAGE, key: "upc", extension: true)
   @join__type(graph: PRODUCT, key: "upc")
-  @join__type(graph: REVIEW, key: "upc") {
+  @join__type(graph: REVIEW, key: "upc", extension: true) {
   upc: String!
   id: Int!
+  images: [Image] @join__field(graph: IMAGE)
   name: String! @join__field(graph: PRODUCT)
   price: Float @join__field(graph: PRODUCT)
   reviews: [Review] @join__field(graph: REVIEW)
 }
 
+type Query
+  @join__type(graph: IMAGE)
+  @join__type(graph: PRODUCT)
+  @join__type(graph: REVIEW) {
+  topProducts(first: Int = 5): [Product] @join__field(graph: PRODUCT)
+}
+
 type Review @join__type(graph: REVIEW) {
   body: String
-  product: Product
 }

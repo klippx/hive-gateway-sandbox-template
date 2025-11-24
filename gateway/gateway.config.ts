@@ -2,6 +2,10 @@ import * as fs from "fs";
 import { parseEnv, z } from "znv";
 import type { GatewayConfigSupergraph } from "@graphql-hive/gateway";
 import { log } from "./logger.js";
+import {
+  useRequestLog,
+  useDebugQueryPlan,
+} from "@sandbox-template/shared/mesh-plugins/index.js";
 
 const envSchemas = {
   SERVICE_NAME: z.string().default("hive-gateway"),
@@ -46,4 +50,5 @@ export const gatewayConfig: GatewayConfigSupergraph = {
   graphiql: {
     defaultQuery,
   },
+  plugins: (ctx) => [useRequestLog(ctx), useDebugQueryPlan],
 };

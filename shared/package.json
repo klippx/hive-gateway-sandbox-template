@@ -1,0 +1,17 @@
+{
+  "name": "@sandbox-template/shared",
+  "version": "1.0.0",
+  "type": "module",
+  "repository": "https://github.com/klippx/hive-gateway-sandbox-template",
+  "dependencies": {
+    "@apollo/subgraph": "2.11.0",
+    "graphql": "16.11.0",
+    "graphql-tag": "2.12.6",
+    "graphql-yoga": "5.13.5"
+  },
+  "devDependencies": {
+    "@types/node": "24.0.1",
+    "prettier": "3.5.3",
+    "typescript": "5.8.3"
+  }
+}

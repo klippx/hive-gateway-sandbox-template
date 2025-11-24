@@ -10,6 +10,11 @@ type Query {
   topProducts(first: Int = 5): [Product]
 }
 
+type Image @key(fields: "id") {
+  id: Int!
+  count: Int
+}
+
 type Product @key(fields: "upc") {
   id: Int! @shareable
   upc: String!

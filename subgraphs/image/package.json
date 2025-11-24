@@ -1,0 +1,23 @@
+{
+  "name": "@sandbox-template/image-subgraph",
+  "version": "1.0.0",
+  "type": "module",
+  "repository": "https://github.com/klippx/hive-gateway-sandbox-template",
+  "scripts": {
+    "codegen": "graphql-codegen --config codegen.yml"
+  },
+  "dependencies": {
+    "@apollo/subgraph": "2.11.0",
+    "graphql": "16.11.0",
+    "graphql-tag": "2.12.6",
+    "graphql-yoga": "5.13.5"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "5.0.7",
+    "@graphql-codegen/typescript": "4.1.6",
+    "@graphql-codegen/typescript-resolvers": "4.5.1",
+    "@types/node": "24.0.1",
+    "prettier": "3.5.3",
+    "typescript": "5.8.3"
+  }
+}

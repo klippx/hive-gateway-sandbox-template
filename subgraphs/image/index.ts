@@ -3,18 +3,18 @@ import { createYoga } from "graphql-yoga";
 import { buildSchema } from "./build-schema.js";
 import { useRequestLog } from "@sandbox-template/shared/yoga-plugins/index.js";
 
-export const startProductServer = () => {
-  console.info("Starting Product subgraph....");
-  const port = 4000;
+export const startImageServer = () => {
+  console.info("Starting Image subgraph....");
+  const port = 4002;
   const schema = buildSchema();
   const yoga = createYoga({
     schema,
-    plugins: [useRequestLog({ subgraph: "product" })],
+    plugins: [useRequestLog({ subgraph: "image" })],
   });
   const server = createServer(yoga);
   server.listen(port, () => {
     console.info(
-      `Product subgraph is running on http://localhost:${port}/graphql`
+      `Image subgraph is running on http://localhost:${port}/graphql`
     );
   });
 };

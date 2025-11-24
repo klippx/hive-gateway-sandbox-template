@@ -1,14 +1,7 @@
 import chalk from "chalk";
 import { log } from "./logger.js";
 import fetch, { type Response } from "node-fetch";
-
-type Dgs = {
-  port: number;
-};
-
-type DevConfig = {
-  subgraphs: Record<string, Dgs>;
-};
+import { servicesConfig } from "@sandbox-template/shared/config/index.js";
 
 type Service = {
   name: string;
@@ -44,24 +37,12 @@ async function wait(url: string, timeout: number): Promise<void> {
   }
 }
 
-const servicesConfig: DevConfig = {
-  subgraphs: {
-    product: {
-      port: 4000,
-    },
-    review: {
-      port: 4001,
-    },
-  },
-};
-
 const pendingIcon = chalk.yellow("☇");
 const successIcon = chalk.green("✔");
 const failureIcon = chalk.red("𐄂");
 
 export const waitForServices = async (timeout: number): Promise<Service[]> => {
-  const config = servicesConfig;
-  const dgsEntries = Object.entries(config.subgraphs);
+  const dgsEntries = Object.entries(servicesConfig.subgraphs);
   const waitList = new Set(dgsEntries.map(([name, _dgs]) => name));
   const interval = setInterval(() => {
     const serviceList = Array.from(waitList.values()).join(", ");
@@ -77,7 +58,6 @@ export const waitForServices = async (timeout: number): Promise<Service[]> => {
           return {
             name,
             url: urlString,
-            local: dgs.local,
           };
         })
         .catch((e) => {
