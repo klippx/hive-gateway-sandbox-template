@@ -1,23 +1,15 @@
 extend schema @link(url: "https://specs.apollo.dev/link/v1.0")
 
 extend schema
-  @link(
-    url: "https://specs.apollo.dev/federation/v2.6"
-    import: ["@key", "@shareable"]
-  )
+  @link(url: "https://specs.apollo.dev/federation/v2.6", import: ["@key"])
 
 type Query {
   topProducts(first: Int = 5): [Product]
 }
 
-type Image @key(fields: "id") {
-  id: Int!
-  count: Int
-}
-
+# https://www.apollographql.com/docs/graphos/schema-design/federated-schemas/entities/intro
 type Product @key(fields: "upc") {
-  id: Int! @shareable
-  upc: String!
+  upc: ID!
   name: String!
   price: Float
 }

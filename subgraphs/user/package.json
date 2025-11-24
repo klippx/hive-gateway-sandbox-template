@@ -1,5 +1,5 @@
 {
-  "name": "@sandbox-template/review-subgraph",
+  "name": "@sandbox-template/user-subgraph",
   "version": "1.0.0",
   "type": "module",
   "repository": "https://github.com/klippx/hive-gateway-sandbox-template",

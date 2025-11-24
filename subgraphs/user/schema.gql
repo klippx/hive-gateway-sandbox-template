@@ -1,0 +1,18 @@
+extend schema @link(url: "https://specs.apollo.dev/link/v1.0")
+
+extend schema
+  @link(
+    url: "https://specs.apollo.dev/federation/v2.6"
+    import: ["@key", "@external", "@inaccessible"]
+  )
+
+type User @key(fields: "id organization { id }", resolvable: true) {
+  id: ID! @inaccessible
+  organization: Organization!
+  name: String!
+}
+
+type Organization @key(fields: "id", resolvable: true) {
+  id: ID! @inaccessible
+  name: String!
+}

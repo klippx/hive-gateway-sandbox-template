@@ -38,8 +38,15 @@ const createSupergraph = () => {
 const defaultQuery = `query SampleQuery {
   topProducts {
     name
+    price
     reviews {
       body
+      user {
+        name
+        organization {
+          name
+        }
+      }
     }
   }
 }`.trim();

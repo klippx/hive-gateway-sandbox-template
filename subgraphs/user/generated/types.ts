@@ -26,18 +26,20 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
+  _FieldSet: { input: any; output: any };
 };
 
-export type $Image = {
-  __typename?: "Image";
-  id: Scalars["Int"]["output"];
-  url?: Maybe<Scalars["String"]["output"]>;
+export type $Organization = {
+  __typename?: "Organization";
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
 };
 
-export type $Product = {
-  __typename?: "Product";
-  images?: Maybe<Array<Maybe<$Image>>>;
-  upc: Scalars["String"]["output"];
+export type $User = {
+  __typename?: "User";
+  id: Scalars["ID"]["output"];
+  name: Scalars["String"]["output"];
+  organization: $Organization;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -45,10 +47,31 @@ export type ResolversObject<TObject> = WithIndex<TObject>;
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
 
+export type ReferenceResolver<TResult, TReference, TContext> = (
+  reference: TReference,
+  context: TContext,
+  info: GraphQLResolveInfo,
+) => Promise<TResult> | TResult;
+
+type ScalarCheck<T, S> = S extends true ? T : NullableCheck<T, S>;
+type NullableCheck<T, S> =
+  Maybe<T> extends T ? Maybe<ListCheck<NonNullable<T>, S>> : ListCheck<T, S>;
+type ListCheck<T, S> = T extends (infer U)[]
+  ? NullableCheck<U, S>[]
+  : GraphQLRecursivePick<T, S>;
+export type GraphQLRecursivePick<T, S> = {
+  [K in keyof T & keyof S]: ScalarCheck<T[K], S[K]>;
+};
+
 export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
   resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
 };
-export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
+export type Resolver<
+  TResult,
+  TParent = Record<PropertyKey, never>,
+  TContext = Record<PropertyKey, never>,
+  TArgs = Record<PropertyKey, never>,
+> =
   | ResolverFn<TResult, TParent, TContext, TArgs>
   | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
 
@@ -112,22 +135,29 @@ export type SubscriptionObject<
 export type SubscriptionResolver<
   TResult,
   TKey extends string,
-  TParent = {},
-  TContext = {},
-  TArgs = {},
+  TParent = Record<PropertyKey, never>,
+  TContext = Record<PropertyKey, never>,
+  TArgs = Record<PropertyKey, never>,
 > =
   | ((
       ...args: any[]
     ) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
   | SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>;
 
-export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
+export type TypeResolveFn<
+  TTypes,
+  TParent = Record<PropertyKey, never>,
+  TContext = Record<PropertyKey, never>,
+> = (
   parent: TParent,
   context: TContext,
   info: GraphQLResolveInfo,
 ) => Maybe<TTypes> | Promise<Maybe<TTypes>>;
 
-export type IsTypeOfResolverFn<T = {}, TContext = {}> = (
+export type IsTypeOfResolverFn<
+  T = Record<PropertyKey, never>,
+  TContext = Record<PropertyKey, never>,
+> = (
   obj: T,
   context: TContext,
   info: GraphQLResolveInfo,
@@ -136,10 +166,10 @@ export type IsTypeOfResolverFn<T = {}, TContext = {}> = (
 export type NextResolverFn<T> = () => Promise<T>;
 
 export type DirectiveResolverFn<
-  TResult = {},
-  TParent = {},
-  TContext = {},
-  TArgs = {},
+  TResult = Record<PropertyKey, never>,
+  TParent = Record<PropertyKey, never>,
+  TContext = Record<PropertyKey, never>,
+  TArgs = Record<PropertyKey, never>,
 > = (
   next: NextResolverFn<TResult>,
   parent: TParent,
@@ -148,49 +178,80 @@ export type DirectiveResolverFn<
   info: GraphQLResolveInfo,
 ) => TResult | Promise<TResult>;
 
+/** Mapping of federation types */
+export type $FederationTypes = ResolversObject<{
+  Organization: $Organization;
+  User: $User;
+}>;
+
+/** Mapping of federation reference types */
+export type $FederationReferenceTypes = ResolversObject<{
+  Organization: { __typename: "Organization" } & GraphQLRecursivePick<
+    FederationTypes["Organization"],
+    { id: true }
+  >;
+  User: { __typename: "User" } & GraphQLRecursivePick<
+    FederationTypes["User"],
+    { id: true; organization: { id: true } }
+  >;
+}>;
+
 /** Mapping between all available schema types and the resolvers types */
 export type $ResolversTypes = ResolversObject<{
-  Boolean: ResolverTypeWrapper<Scalars["Boolean"]["output"]>;
-  Image: ResolverTypeWrapper<$Image>;
-  Int: ResolverTypeWrapper<Scalars["Int"]["output"]>;
-  Product: ResolverTypeWrapper<$Product>;
+  Organization: ResolverTypeWrapper<$Organization>;
+  ID: ResolverTypeWrapper<Scalars["ID"]["output"]>;
   String: ResolverTypeWrapper<Scalars["String"]["output"]>;
+  User: ResolverTypeWrapper<$User>;
+  Boolean: ResolverTypeWrapper<Scalars["Boolean"]["output"]>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type $ResolversParentTypes = ResolversObject<{
-  Boolean: Scalars["Boolean"]["output"];
-  Image: $Image;
-  Int: Scalars["Int"]["output"];
-  Product: $Product;
+  Organization: $Organization | $FederationReferenceTypes["Organization"];
+  ID: Scalars["ID"]["output"];
   String: Scalars["String"]["output"];
+  User: $User | $FederationReferenceTypes["User"];
+  Boolean: Scalars["Boolean"]["output"];
 }>;
 
-export type $ImageResolvers<
+export type $OrganizationResolvers<
   ContextType = any,
   ParentType extends
-    $ResolversParentTypes["Image"] = $ResolversParentTypes["Image"],
+    $ResolversParentTypes["Organization"] = $ResolversParentTypes["Organization"],
+  FederationReferenceType extends
+    $FederationReferenceTypes["Organization"] = $FederationReferenceTypes["Organization"],
 > = ResolversObject<{
-  id?: Resolver<$ResolversTypes["Int"], ParentType, ContextType>;
-  url?: Resolver<Maybe<$ResolversTypes["String"]>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+  __resolveReference?: ReferenceResolver<
+    Maybe<$ResolversTypes["Organization"]> | FederationReferenceType,
+    FederationReferenceType,
+    ContextType
+  >;
+  id?: Resolver<$ResolversTypes["ID"], ParentType, ContextType>;
+  name?: Resolver<$ResolversTypes["String"], ParentType, ContextType>;
 }>;
 
-export type $ProductResolvers<
+export type $UserResolvers<
   ContextType = any,
   ParentType extends
-    $ResolversParentTypes["Product"] = $ResolversParentTypes["Product"],
+    $ResolversParentTypes["User"] = $ResolversParentTypes["User"],
+  FederationReferenceType extends
+    $FederationReferenceTypes["User"] = $FederationReferenceTypes["User"],
 > = ResolversObject<{
-  images?: Resolver<
-    Maybe<Array<Maybe<$ResolversTypes["Image"]>>>,
+  __resolveReference?: ReferenceResolver<
+    Maybe<$ResolversTypes["User"]> | FederationReferenceType,
+    FederationReferenceType,
+    ContextType
+  >;
+  id?: Resolver<$ResolversTypes["ID"], ParentType, ContextType>;
+  name?: Resolver<$ResolversTypes["String"], ParentType, ContextType>;
+  organization?: Resolver<
+    $ResolversTypes["Organization"],
     ParentType,
     ContextType
   >;
-  upc?: Resolver<$ResolversTypes["String"], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type $Resolvers<ContextType = any> = ResolversObject<{
-  Image?: $ImageResolvers<ContextType>;
-  Product?: $ProductResolvers<ContextType>;
+  Organization?: $OrganizationResolvers<ContextType>;
+  User?: $UserResolvers<ContextType>;
 }>;

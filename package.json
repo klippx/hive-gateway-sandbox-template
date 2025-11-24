@@ -10,11 +10,12 @@
     "subgraphs/*"
   ],
   "scripts": {
+    "codegen": "yarn workspaces foreach --all -j 100 -vpi run codegen",
     "start": "tsx ./index.ts"
   },
   "devDependencies": {
-    "@graphql-hive/cli": "0.50.1",
-    "tsx": "4.20.1"
+    "@graphql-hive/cli": "0.53.4",
+    "tsx": "4.20.6"
   },
-  "packageManager": "yarn@4.9.2"
+  "packageManager": "yarn@4.12.0"
 }

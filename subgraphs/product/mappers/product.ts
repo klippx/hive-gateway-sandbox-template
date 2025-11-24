@@ -1,3 +1,4 @@
 import { $Product } from "../generated/types.js";
 
-export type Product = Pick<$Product, "id">;
+// Remove price field from Product type to be able to resolve it lazily when requested only.
+export type Product = Omit<$Product, "price">;

@@ -1,6 +1,7 @@
 schema
   @link(url: "https://specs.apollo.dev/link/v1.0")
-  @link(url: "https://specs.apollo.dev/join/v0.3", for: EXECUTION) {
+  @link(url: "https://specs.apollo.dev/join/v0.3", for: EXECUTION)
+  @link(url: "https://specs.apollo.dev/inaccessible/v0.2", for: SECURITY) {
   query: Query
 }
 
@@ -59,39 +60,47 @@ enum link__Purpose {
   EXECUTION
 }
 
+directive @inaccessible on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ENUM | ENUM_VALUE | SCALAR | INPUT_OBJECT | INPUT_FIELD_DEFINITION | ARGUMENT_DEFINITION
+
 enum join__Graph {
-  IMAGE @join__graph(name: "image", url: "http://localhost:4002/graphql")
   PRODUCT @join__graph(name: "product", url: "http://localhost:4000/graphql")
   REVIEW @join__graph(name: "review", url: "http://localhost:4001/graphql")
+  USER @join__graph(name: "user", url: "http://localhost:4002/graphql")
 }
 
-type Image
-  @join__type(graph: IMAGE, key: "id")
-  @join__type(graph: PRODUCT, key: "id") {
-  id: Int!
-  url: String @join__field(graph: IMAGE)
-  count: Int @join__field(graph: PRODUCT)
+type Query
+  @join__type(graph: PRODUCT)
+  @join__type(graph: REVIEW)
+  @join__type(graph: USER) {
+  topProducts(first: Int = 5): [Product] @join__field(graph: PRODUCT)
 }
 
 type Product
-  @join__type(graph: IMAGE, key: "upc", extension: true)
   @join__type(graph: PRODUCT, key: "upc")
-  @join__type(graph: REVIEW, key: "upc", extension: true) {
-  upc: String!
-  id: Int!
-  images: [Image] @join__field(graph: IMAGE)
+  @join__type(graph: REVIEW, key: "upc") {
+  upc: ID!
   name: String! @join__field(graph: PRODUCT)
   price: Float @join__field(graph: PRODUCT)
   reviews: [Review] @join__field(graph: REVIEW)
 }
 
-type Query
-  @join__type(graph: IMAGE)
-  @join__type(graph: PRODUCT)
-  @join__type(graph: REVIEW) {
-  topProducts(first: Int = 5): [Product] @join__field(graph: PRODUCT)
+type User
+  @join__type(graph: REVIEW, key: "id organization { id }", resolvable: false)
+  @join__type(graph: USER, key: "id organization { id }") {
+  id: ID! @inaccessible
+  organization: Organization!
+  name: String! @join__field(graph: USER)
+}
+
+type Organization
+  @join__type(graph: REVIEW, key: "id", resolvable: false)
+  @join__type(graph: USER, key: "id") {
+  id: ID! @inaccessible
+  name: String! @join__field(graph: USER)
 }
 
 type Review @join__type(graph: REVIEW) {
-  body: String
+  id: ID!
+  body: String!
+  user: User!
 }

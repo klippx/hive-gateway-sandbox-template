@@ -31,12 +31,9 @@ export const useRequestLog = ({ subgraph }: RequestLogOptions): Plugin => {
         .replace(/\n/g, " ")
         .replace(/\s+/g, " ")
         .trim();
-      const requestTimestamp = Date.now();
 
       return {
         onExecuteDone({ result }) {
-          const duration = Date.now() - requestTimestamp;
-
           if (
             operationName === "IntrospectionQuery" ||
             !(operationName || variables)
@@ -58,7 +55,6 @@ export const useRequestLog = ({ subgraph }: RequestLogOptions): Plugin => {
               subgraph,
               operationName,
               variables,
-              duration,
               errors: result.errors,
             });
           } else {
@@ -67,7 +63,6 @@ export const useRequestLog = ({ subgraph }: RequestLogOptions): Plugin => {
               subgraph,
               operationName,
               variables,
-              duration,
             });
           }
         },

@@ -6,10 +6,13 @@ generates:
       - typescript
       - typescript-resolvers
     config:
+      federation: true # generates types for reference resolvers
       typesPrefix: "$"
       enumsAsTypes: true
       useIndexSignature: true
       maybeValue: "T | undefined"
+      mappers:
+        Review: "../mappers/review.js#Review"
 hooks:
   afterAllFileWrite:
     - "yarn prettier --write"

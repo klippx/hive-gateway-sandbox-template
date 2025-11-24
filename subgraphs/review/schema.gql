@@ -3,15 +3,31 @@ extend schema @link(url: "https://specs.apollo.dev/link/v1.0")
 extend schema
   @link(
     url: "https://specs.apollo.dev/federation/v2.6"
-    import: ["@key", "@external", "@shareable"]
+    import: ["@key", "@external"]
   )
 
-type Review {
-  body: String
+# This is an "entity stub", we only need the id fields to reference User entities.
+# Note: This should be resolvable: false, we can not resolve User from the Review subgraph.
+type User @key(fields: "id organization { id }", resolvable: false) {
+  id: ID!
+  organization: Organization!
 }
 
-extend type Product @key(fields: "upc") {
-  id: Int! @shareable
-  upc: String!
+# This is an "entity stub", we only need the id fields to reference Organization entities.
+# Note: This should be resolvable: false, we can not resolve Organization from the Review subgraph.
+type Organization @key(fields: "id", resolvable: false) {
+  id: ID!
+}
+
+type Review {
+  id: ID!
+  body: String!
+  user: User!
+}
+
+# https://www.apollographql.com/docs/graphos/schema-design/federated-schemas/entities/intro
+# Note: This needs to be resolvable, since we are adding `reviews` field.
+type Product @key(fields: "upc", resolvable: true) {
+  upc: ID!
   reviews: [Review]
 }

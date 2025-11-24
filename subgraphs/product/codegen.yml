@@ -6,6 +6,7 @@ generates:
       - typescript
       - typescript-resolvers
     config:
+      federation: true # generates types for reference resolvers
       typesPrefix: "$"
       enumsAsTypes: true
       useIndexSignature: true

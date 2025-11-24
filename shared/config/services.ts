@@ -14,7 +14,7 @@ export const servicesConfig: DevConfig = {
     review: {
       port: 4001,
     },
-    image: {
+    user: {
       port: 4002,
     },
   },
