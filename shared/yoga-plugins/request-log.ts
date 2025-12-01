@@ -16,7 +16,7 @@ export const useRequestLog = ({ subgraph }: RequestLogOptions): Plugin => {
 
     onExecute({ args }) {
       const operationName = args.operationName;
-      let variables = args.variableValues;
+      let variables: Record<string, any> | undefined = args.variableValues;
       if (
         typeof variables === "object" &&
         variables !== null &&
@@ -27,10 +27,17 @@ export const useRequestLog = ({ subgraph }: RequestLogOptions): Plugin => {
           representations: JSON.stringify(variables.representations),
         };
       }
-      const query = print(args.document)
+      const formattedQuery = print(args.document)
         .replace(/\n/g, " ")
         .replace(/\s+/g, " ")
         .trim();
+
+      const formattedVariables = variables
+        ? JSON.stringify(variables, null, 2)
+            .replace(/\n/g, " ")
+            .replace(/\s+/g, " ")
+            .trim()
+        : undefined;
 
       return {
         onExecuteDone({ result }) {
@@ -51,42 +58,22 @@ export const useRequestLog = ({ subgraph }: RequestLogOptions): Plugin => {
 
           if (hasErrors) {
             yogaLogger.error("Subgraph operation completed with errors", {
-              query,
               subgraph,
               operationName,
-              variables,
+              query: formattedQuery,
+              variables: formattedVariables,
               errors: result.errors,
             });
           } else {
             yogaLogger.info("Subgraph operation completed successfully", {
-              query,
               subgraph,
               operationName,
-              variables,
+              query: formattedQuery,
+              variables: formattedVariables,
             });
           }
         },
       };
     },
-
-    // onResponse({ response }) {
-    //   const status = response.status;
-    //   const statusText = response.statusText;
-
-    //   if (status >= 400) {
-    //     yogaLogger.error("GraphQL error response", {
-    //       subgraph,
-    //       status,
-    //       statusText,
-    //       headers: Object.fromEntries(response.headers.entries()),
-    //     });
-    //   } else {
-    //     yogaLogger.info("GraphQL response sent", {
-    //       subgraph,
-    //       status,
-    //       statusText,
-    //     });
-    //   }
-    // },
   };
 };

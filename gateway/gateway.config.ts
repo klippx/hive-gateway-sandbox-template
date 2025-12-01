@@ -1,11 +1,11 @@
 import * as fs from "fs";
 import { parseEnv, z } from "znv";
-import type { GatewayConfigSupergraph } from "@graphql-hive/gateway";
-import { log } from "./logger.js";
+import { defineConfig } from "@graphql-hive/gateway";
 import {
-  useRequestLog,
-  useDebugQueryPlan,
-} from "@sandbox-template/shared/mesh-plugins/index.js";
+  unifiedGraphHandler,
+  useQueryPlan,
+} from "@graphql-hive/router-runtime";
+import { log } from "./logger.js";
 
 const envSchemas = {
   SERVICE_NAME: z.string().default("hive-gateway"),
@@ -51,11 +51,21 @@ const defaultQuery = `query SampleQuery {
   }
 }`.trim();
 
-export const gatewayConfig: GatewayConfigSupergraph = {
+export const gatewayConfig = defineConfig({
+  unifiedGraphHandler,
   supergraph: createSupergraph(),
   graphqlEndpoint: "/",
   graphiql: {
     defaultQuery,
   },
-  plugins: (ctx) => [useRequestLog(ctx), useDebugQueryPlan],
-};
+  plugins: (ctx) => [
+    useQueryPlan({
+      // Query plan available callback
+      onQueryPlan(queryPlan) {
+        ctx.log.info({ queryPlan }, "Generated Query Plan");
+      },
+      // Expose the query plan in the graphql result extensions
+      expose: true,
+    }),
+  ],
+});

@@ -4,7 +4,8 @@
   "type": "module",
   "repository": "https://github.com/klippx/hive-gateway-sandbox-template",
   "dependencies": {
-    "@graphql-hive/gateway": "1.15.1",
+    "@graphql-hive/gateway": "2.1.21",
+    "@graphql-hive/router-runtime": "1.1.1",
     "chalk": "5.4.1",
     "graphql": "16.12.0",
     "graphql-middleware": "6.1.35",
